@@ -18,6 +18,9 @@ public class Inventory {
 		this.inventoryItems = inventoryItems;
 
 		// convert the list into a map with the item's `code` as the key. Useful for direct lookups
+		// the reason the original JSON isn't in this format is because it would be difficult to
+		// create a comprehensible JSON schema and parse into POJOs by Jackson. As it stands, the
+		// performance overhead of the extra processing is worth the convenience gained.
 		this.itemsByCode = this.inventoryItems.stream().collect(Collectors.toMap(
 				InventoryItem::getCode, Function.identity()
 		));

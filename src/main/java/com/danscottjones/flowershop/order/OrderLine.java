@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * One line of an order. Represented by the item being ordered and the quantity required.
+ */
 public class OrderLine {
 
 	private InventoryItem item;
@@ -18,7 +21,7 @@ public class OrderLine {
 
 	private List<OrderLineBundle> bundlesBought = new ArrayList<>();
 
-	public OrderLine(InventoryItem item, int quantity) throws InvalidOrderException {
+	public  OrderLine(InventoryItem item, int quantity) throws InvalidOrderException {
 		this.item = item;
 		this.quantity = quantity;
 		initOrderLine();
@@ -54,6 +57,8 @@ public class OrderLine {
 		}
 
 		// here is a Map of bundles (key: bundle size, value: quantity of that bundle)
+		// usually wouldn't use static methods as this hinders testing, but for this simple exercise
+		// there's not much to worry about
 		Map<Integer, Integer> bundles = BundleQuantitySolver.solve(bundleSizes, this.quantity);
 
 		// add the bundle quantities to the `bundlesBought` list and check that sum of bundles
