@@ -1,9 +1,16 @@
 
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "com.danscottjones.flowershop.Application"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
     jcenter()
+}
+
+run {
+    standardInput = System.in
 }
 
 // In this section you declare the dependencies for your production and test code
