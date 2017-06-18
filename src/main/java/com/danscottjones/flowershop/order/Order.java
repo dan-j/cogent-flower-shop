@@ -25,4 +25,8 @@ public class Order {
 				.map(OrderLine::calculateCost)
 				.reduce(0.0, Double::sum);
 	}
+
+	public List<OrderLine> getOrderLines() {
+		return orderLines;
+	}
 }

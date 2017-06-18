@@ -1,7 +1,6 @@
 package com.danscottjones.flowershop.order;
 
 import com.danscottjones.flowershop.inventory.InventoryItem;
-import com.danscottjones.flowershop.parser.InvalidInputException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,7 +25,7 @@ public class OrderLine {
 
 	public double calculateCost() {
 		return bundlesBought.stream()
-				.map(bundle -> bundle.getBundle().getPrice() * bundle.getQuantity())
+				.map(OrderLineBundle::calculateCost)
 				.reduce(0.0, Double::sum);
 	}
 
@@ -35,10 +34,10 @@ public class OrderLine {
 	 */
 	private void initOrderLine() throws InvalidOrderException {
 
-		List<InventoryItem.Bundle> bundleCosts = item.getBundles();
+		List<InventoryItem.Bundle> bundleDetails = item.getBundles();
 
-		// reorganise bundlesBought so we have a LinkedHashMap ordered by quantity
-		Map<Integer, InventoryItem.Bundle> bundleByQuantity = bundleCosts.stream()
+		// reorganise bundlesDetails so we have a LinkedHashMap ordered by quantity
+		Map<Integer, InventoryItem.Bundle> bundleByQuantity = bundleDetails.stream()
 				.sorted(Comparator.comparingInt(InventoryItem.Bundle::getQuantity).reversed())
 				.collect(Collectors.toMap(
 						InventoryItem.Bundle::getQuantity,
@@ -47,24 +46,29 @@ public class OrderLine {
 						LinkedHashMap::new
 				));
 
-		int remaining = quantity;
-		for (Map.Entry<Integer, InventoryItem.Bundle> entry : bundleByQuantity.entrySet()) {
-			if (remaining == 0) {
-				break;
-			}
-
-			int bundleSize = entry.getKey();
-			if (bundleSize <= remaining) {
-				// integer division will round down for us
-				int bundleQuantity = remaining / bundleSize;
-				bundlesBought.add(new OrderLineBundle(entry.getValue(), bundleQuantity));
-				remaining -= (bundleQuantity * bundleSize);
-			}
+		int[] bundleSizes = new int[bundleDetails.size()];
+		int i = 0;
+		for (Integer size : bundleByQuantity.keySet()) {
+			bundleSizes[i++] = size;
 		}
 
-		if (remaining != 0) {
-			throw new InvalidOrderException("Input quantity is not a valid multiple of available " +
-					"bundles");
+		// here is a Map of bundles (key: bundle size, value: quantity of that bundle)
+		Map<Integer, Integer> bundles = BundleQuantitySolver.solve(bundleSizes, this.quantity);
+
+		// add the bundle quantities to the `bundlesBought` list and check that sum of bundles
+		// equal required quantity
+		int sum = bundles.entrySet()
+				.stream()
+				.peek(entry -> bundlesBought.add(new OrderLineBundle(
+						bundleByQuantity.get(entry.getKey()),
+						entry.getValue()))
+				)
+				.mapToInt(entry -> entry.getKey() * entry.getValue())
+				.sum();
+
+		if (sum != this.quantity) {
+			throw new InvalidOrderException(
+					"Input quantity is not a valid multiple of available bundles");
 		}
 	}
 

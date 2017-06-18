@@ -12,6 +12,10 @@ public class OrderLineBundle {
 		this.quantity = quantity;
 	}
 
+	public double calculateCost() {
+		return quantity * bundle.getPrice();
+	}
+
 	public InventoryItem.Bundle getBundle() {
 		return bundle;
 	}
