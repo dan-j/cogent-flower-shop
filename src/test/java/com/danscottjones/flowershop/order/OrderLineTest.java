@@ -3,6 +3,7 @@ package com.danscottjones.flowershop.order;
 import com.danscottjones.flowershop.inventory.InventoryItem;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,9 +11,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderLineTest {
 
-	private static final InventoryItem.Bundle THREE_BUNDLE = new InventoryItem.Bundle(3, 6);
-	private static final InventoryItem.Bundle FIVE_BUNDLE = new InventoryItem.Bundle(5, 10);
-	private static final InventoryItem.Bundle NINE_BUNDLE = new InventoryItem.Bundle(9, 17);
+	private static final InventoryItem.Bundle THREE_BUNDLE = new InventoryItem.Bundle(3,
+			BigDecimal.valueOf(6));
+	private static final InventoryItem.Bundle FIVE_BUNDLE = new InventoryItem.Bundle(5,
+			BigDecimal.valueOf(10));
+	private static final InventoryItem.Bundle NINE_BUNDLE = new InventoryItem.Bundle(9,
+			BigDecimal.valueOf(17));
 
 	private static final InventoryItem ITEM = new InventoryItem("A01", "Item A",
 			Arrays.asList(THREE_BUNDLE, FIVE_BUNDLE));
@@ -36,7 +40,7 @@ public class OrderLineTest {
 
 		assertThat(line.calculateCost())
 				.describedAs("OrderLine should cost 6")
-				.isEqualTo(6.0);
+				.isEqualTo(BigDecimal.valueOf(6));
 	}
 
 	@Test
@@ -58,7 +62,7 @@ public class OrderLineTest {
 
 		assertThat(line.calculateCost())
 				.describedAs("OrderLine should cost 10")
-				.isEqualTo(10.0);
+				.isEqualTo(BigDecimal.valueOf(10));
 	}
 
 	@Test
@@ -90,7 +94,7 @@ public class OrderLineTest {
 
 		assertThat(line.calculateCost())
 				.describedAs("OrderLine should cost 16")
-				.isEqualTo(16.0);
+				.isEqualTo(BigDecimal.valueOf(16));
 	}
 
 	@Test
@@ -122,15 +126,7 @@ public class OrderLineTest {
 
 		assertThat(line.calculateCost())
 				.describedAs("OrderLine should cost 26")
-				.isEqualTo(26.0);
-	}
-
-	@Test
-	public void test() {
-
-//		solution = BundleQuantitySolver.solve(new int[] { 3, 5, 9 }, 13);
-//		assertThat(solution).describedAs("3 5 9 = 13").containsExactly(5, 5, 3);
-
+				.isEqualTo(BigDecimal.valueOf(26));
 	}
 
 	/**
@@ -170,13 +166,13 @@ public class OrderLineTest {
 
 		assertThat(line.calculateCost())
 				.describedAs("OrderLine should cost 26")
-				.isEqualTo(26.0);
+				.isEqualTo(BigDecimal.valueOf(26));
 
 	}
 
 	@Test(expected = InvalidOrderException.class)
 	public void testInputNotMultipleOfBundle() throws InvalidOrderException {
-		OrderLine line = new OrderLine(ITEM, 4);
+		new OrderLine(ITEM, 4);
 	}
 
 }

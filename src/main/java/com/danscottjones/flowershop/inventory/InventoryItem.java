@@ -3,6 +3,7 @@ package com.danscottjones.flowershop.inventory;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -54,11 +55,11 @@ public class InventoryItem {
 	 */
 	public static class Bundle {
 		private int quantity;
-		private double price;
+		private BigDecimal price;
 
 		@JsonCreator
 		public Bundle(@JsonProperty(value = "quantity", required = true) int quantity,
-		              @JsonProperty(value = "price", required = true) double price) {
+		              @JsonProperty(value = "price", required = true) BigDecimal price) {
 			this.quantity = quantity;
 			this.price = price;
 		}
@@ -71,11 +72,11 @@ public class InventoryItem {
 			this.quantity = quantity;
 		}
 
-		public double getPrice() {
+		public BigDecimal getPrice() {
 			return price;
 		}
 
-		public void setPrice(double price) {
+		public void setPrice(BigDecimal price) {
 			this.price = price;
 		}
 	}

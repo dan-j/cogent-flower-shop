@@ -2,6 +2,7 @@ package com.danscottjones.flowershop.order;
 
 import com.danscottjones.flowershop.inventory.InventoryItem;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -23,10 +24,10 @@ public class OrderLine {
 		initOrderLine();
 	}
 
-	public double calculateCost() {
+	public BigDecimal calculateCost() {
 		return bundlesBought.stream()
 				.map(OrderLineBundle::calculateCost)
-				.reduce(0.0, Double::sum);
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	/**

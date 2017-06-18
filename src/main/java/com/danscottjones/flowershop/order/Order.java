@@ -1,5 +1,6 @@
 package com.danscottjones.flowershop.order;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -20,10 +21,10 @@ public class Order {
 		return orderLines.stream();
 	}
 
-	public double calculateTotal() {
+	public BigDecimal calculateTotal() {
 		return this.stream()
 				.map(OrderLine::calculateCost)
-				.reduce(0.0, Double::sum);
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	public List<OrderLine> getOrderLines() {

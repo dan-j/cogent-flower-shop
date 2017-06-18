@@ -3,15 +3,19 @@ package com.danscottjones.flowershop.order;
 import com.danscottjones.flowershop.inventory.InventoryItem;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderTest {
 
-	private static final InventoryItem.Bundle TWO_BUNDLE = new InventoryItem.Bundle(2, 5);
-	private static final InventoryItem.Bundle FIVE_BUNDLE = new InventoryItem.Bundle(5, 10);
-	private static final InventoryItem.Bundle THREE_BUNDLE = new InventoryItem.Bundle(3, 7);
+	private static final InventoryItem.Bundle TWO_BUNDLE = new InventoryItem.Bundle(2,
+			BigDecimal.valueOf(5));
+	private static final InventoryItem.Bundle THREE_BUNDLE = new InventoryItem.Bundle(3,
+			BigDecimal.valueOf(7));
+	private static final InventoryItem.Bundle FIVE_BUNDLE = new InventoryItem.Bundle(5,
+			BigDecimal.valueOf(10));
 
 	private static InventoryItem ITEM_A = new InventoryItem("A01", "Item A",
 			Arrays.asList(TWO_BUNDLE, FIVE_BUNDLE));
@@ -31,6 +35,6 @@ public class OrderTest {
 
 		assertThat(order.calculateTotal())
 				.describedAs("Total order should cost 60")
-				.isEqualTo(60.0);
+				.isEqualTo(BigDecimal.valueOf(60));
 	}
 }

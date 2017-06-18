@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InventoryLoaderTest {
@@ -52,7 +54,7 @@ public class InventoryLoaderTest {
 		InventoryItem.Bundle bundle = item.getBundles().get(0);
 
 		assertThat(bundle.getQuantity()).isEqualTo(5);
-		assertThat(bundle.getPrice()).isEqualTo(6.99);
+		assertThat(bundle.getPrice()).isEqualTo(BigDecimal.valueOf(6.99));
 	}
 
 }

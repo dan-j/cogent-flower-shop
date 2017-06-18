@@ -2,6 +2,8 @@ package com.danscottjones.flowershop.order;
 
 import com.danscottjones.flowershop.inventory.InventoryItem;
 
+import java.math.BigDecimal;
+
 public class OrderLineBundle {
 
 	private InventoryItem.Bundle bundle;
@@ -12,8 +14,8 @@ public class OrderLineBundle {
 		this.quantity = quantity;
 	}
 
-	public double calculateCost() {
-		return quantity * bundle.getPrice();
+	public BigDecimal calculateCost() {
+		return bundle.getPrice().multiply(BigDecimal.valueOf(quantity));
 	}
 
 	public InventoryItem.Bundle getBundle() {
